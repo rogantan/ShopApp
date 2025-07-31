@@ -17,7 +17,8 @@ from db.base import Base
 class Users(Base):
     __tablename__ = 'Users'
     id: Mapped[str] = mapped_column(UUID, primary_key=True, default=uuid.uuid4)
-    name: Mapped[int] = mapped_column(String, nullable=False, unique=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+
 
 
 
