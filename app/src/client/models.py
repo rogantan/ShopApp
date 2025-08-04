@@ -2,23 +2,28 @@ import uuid
 from sqlalchemy import (
     ForeignKey,
     String,
-    UUID
+    UUID,
+    Date
 )
-#
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime, DECIMAL, TIMESTAMP, func
+
+from sqlalchemy import Column, Integer, Boolean, DECIMAL, TIMESTAMP, func
 from sqlalchemy.dialects.postgresql import BYTEA
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
-#
 from db.base import Base
+from address.models import Addresses
 
 
-class Users(Base):
-    __tablename__ = 'Users'
+class Clients(Base):
+    __tablename__ = 'Clients'
     id: Mapped[str] = mapped_column(UUID, primary_key=True, default=uuid.uuid4)
-    name: Mapped[str] = mapped_column(String, nullable=False)
-
+    cleint_name: Mapped[str] = mapped_column(String, nullable=False)
+    client_surname: Mapped[str] = mapped_column(String, nullable=False)
+    birthday: Mapped[datetime] = mapped_column(Date, nullable=False)
+    gender: Mapped[str] = mapped_column(String, nullable=False)
+    registration_date: Mapped[datetime] = mapped_column(Date, nullable=False, default=datetime.now())
+    address_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('Addresses.id'), nullable=False)
 
 
 
@@ -41,9 +46,9 @@ class Users(Base):
 # #
 # #     role = relationship("Roles", back_populates="users")
 # #     subscription_type = relationship("SubscriptionTypes", back_populates="users")
-# #     trades = relationship("Trade", back_populates="user")
-# #     settings = relationship("Settings", back_populates="user")
-# #     strategies = relationship("Strategy", back_populates="user")
+# #     trades = relationship("Trade", back_populates="client")
+# #     settings = relationship("Settings", back_populates="client")
+# #     strategies = relationship("Strategy", back_populates="client")
 # #
 # #
 # # class Direction(Base):
@@ -72,7 +77,7 @@ class Users(Base):
 # #     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=False), nullable=False, server_default=func.now())
 # #
 # #     trades = relationship("Trade", back_populates="strategy")
-# #     user = relationship("Users", back_populates="strategies")
+# #     client = relationship("Users", back_populates="strategies")
 # #
 # #
 # # class Ticker(Base):
