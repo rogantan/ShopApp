@@ -8,3 +8,4 @@ class ClientAddShema(BaseModel):
     birthday: datetime
     gender: str = Field(max_length=20)
     registration_date: datetime
+    address_id: str

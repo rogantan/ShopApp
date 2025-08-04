@@ -19,8 +19,10 @@ async def get_users(user_id: str, session: AsyncSession = Depends(get_session)):
 
 
 @router.post("/add_users")
-async def add_user(user: ClientAddShema, session: AsyncSession = Depends(get_session)):
-    query = insert(Clients).values(**{"name":user.name})
+async def add_user(client: ClientAddShema, session: AsyncSession = Depends(get_session)):
+    query = insert(Clients).values(**{"client_name":client.client_name, "client_surname": client.client_surname,
+                                      "birthday": client.birthday, "gender": client.gender,
+                                      "registration_date": client.registration_date, "address_id": client.address_id})
     result = await session.execute(query)
     await session.commit()
     return {"message": "User is added"}

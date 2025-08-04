@@ -22,3 +22,10 @@ async def add_address(address: AddressAddShema, session: AsyncSession = Depends(
     result = await session.execute(query)
     await session.commit()
     return {"message": "Address is added"}
+
+
+@router.get("/get_addressess")
+async def get_addresses(session: AsyncSession = Depends(get_session)):
+    query = select(Addresses)
+    result = await session.execute(query)
+    return result.scalars().all()

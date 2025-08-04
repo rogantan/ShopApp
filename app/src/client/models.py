@@ -18,7 +18,7 @@ from address.models import Addresses
 class Clients(Base):
     __tablename__ = 'Clients'
     id: Mapped[str] = mapped_column(UUID, primary_key=True, default=uuid.uuid4)
-    cleint_name: Mapped[str] = mapped_column(String, nullable=False)
+    client_name: Mapped[str] = mapped_column(String, nullable=False)
     client_surname: Mapped[str] = mapped_column(String, nullable=False)
     birthday: Mapped[datetime] = mapped_column(Date, nullable=False)
     gender: Mapped[str] = mapped_column(String, nullable=False)
