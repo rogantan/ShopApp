@@ -35,7 +35,7 @@ async def get_clients(session: AsyncSession = Depends(get_session)):
     return result.scalars().all()
 
 
-@router.delete("/delete_clients")
+@router.delete("/delete_clients/{client_id}")
 async def delete_clients(client_id: str, session: AsyncSession = Depends(get_session)):
     query = delete(Clients).where(client_id == Clients.id)
     await session.execute(query)

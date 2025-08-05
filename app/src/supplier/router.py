@@ -1,7 +1,7 @@
 from fastapi.routing import APIRouter
 from fastapi import Depends
 from db.db import get_session
-from sqlalchemy import select, insert, update
+from sqlalchemy import select, insert, delete
 from supplier.models import Suppliers
 from sqlalchemy.ext.asyncio import AsyncSession
 from supplier.shemas import SupplierAddShema
@@ -30,3 +30,11 @@ async def get_suppliers(session: AsyncSession = Depends(get_session)):
     query = select(Suppliers)
     result = await session.execute(query)
     return result.scalars().all()
+
+
+@router.delete("/delete_suppliers/{supplier_id}")
+async def delete_suppliers(supplier_id: str, session: AsyncSession = Depends(get_session)):
+    query = delete(Suppliers).where(supplier_id == Suppliers.id)
+    await session.execute(query)
+    await session.commit()
+    return {"message": "Supplier is deleted"}

@@ -18,4 +18,5 @@ class ClientNameShema(BaseModel):
 
 
 class ClientAddressShema(BaseModel):
+    id: str
     address_id: uuid.UUID
