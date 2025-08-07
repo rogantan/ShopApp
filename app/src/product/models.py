@@ -21,6 +21,6 @@ class Products(Base):
     category: Mapped[str] = mapped_column(String, nullable=False)
     price: Mapped[float] = mapped_column(FLOAT, nullable=False)
     available_stock: Mapped[int] = mapped_column(Integer, nullable=False)
-    last_update_date: Mapped[int] = mapped_column(Integer, nullable=False)
+    last_update_date: Mapped[datetime] = mapped_column(Date, nullable=False)
     supplier_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("Suppliers.id"), nullable=False)
     image_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('Images.id'), nullable=False)

@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
 import uuid
+from address.shemas import AddressBaseShema
 
 
 class ClientAddShema(BaseModel):
@@ -18,5 +19,5 @@ class ClientNameShema(BaseModel):
 
 
 class ClientAddressShema(BaseModel):
-    id: str
-    address_id: uuid.UUID
+    client_id: str
+    address: AddressBaseShema

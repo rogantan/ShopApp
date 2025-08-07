@@ -6,7 +6,7 @@ from db.base import Base
 
 # DATABASE_URL = str(settings.db_url) # вручную свор
 DATABASE_URL = "postgresql+asyncpg://postgres:yfhmzy03@127.0.0.1:5432/shop"
-engine = create_async_engine(DATABASE_URL)
+engine = create_async_engine(DATABASE_URL, echo=True)
 async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 

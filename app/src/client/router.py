@@ -1,10 +1,12 @@
 from fastapi.routing import APIRouter
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from db.db import get_session
 from sqlalchemy import select, update, insert, delete
 from client.models import Clients
 from sqlalchemy.ext.asyncio import AsyncSession
 from client.shemas import ClientAddShema, ClientAddressShema
+from address.models import Addresses
+from uuid import UUID
 
 router = APIRouter(prefix="/clients", tags=["Пользователи"])
 
@@ -63,5 +65,31 @@ async def get_clients_by_names(client_name: str, client_surname: str, session: A
 
 
 @router.put("/update_client_addresses")
-def update_client_addresses(address: ClientAddressShema, session: AsyncSession = Depends(get_session)):
-    pass
+async def update_client_addresses(address: ClientAddressShema, session: AsyncSession = Depends(get_session)):
+    try:
+        query = insert(Addresses).values(**{"country": address.address.country, "city": address.address.city,
+                                        "street": address.address.street}).returning(Addresses.id)
+        result = await session.execute(query)
+        a = result.scalar_one()
+        if not a:
+            raise HTTPException(500, detail="Error")
+        query_1 = update(Clients).where(address.client_id == Clients.id).values(address_id=a)
+        await session.execute(query_1)
+        await session.commit()
+        return 200
+    except Exception as e:
+        await session.rollback()
+        return e
+
+
+@router.get("/get_clients_with_pagination/")
+async def get_clients_with_pagination(limit: int, offset: int, session: AsyncSession = Depends(get_session)):
+    query = select(Clients).order_by(Clients.id).limit(limit).offset(offset)
+    result = await session.execute(query)
+    items = result.scalars().all()
+    return {
+        "limit": limit,
+        "offset": offset,
+        "count": len(items),
+        "items": items
+    }
